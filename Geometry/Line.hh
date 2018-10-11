@@ -1,3 +1,4 @@
+#pragma once
 #include "Point.hh"
 
 struct Line {

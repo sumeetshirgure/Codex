@@ -1,5 +1,4 @@
-#ifndef _HEAD_H
-#define _HEAD_H
+#pragma once
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -47,5 +46,3 @@ template<typename T, typename Comp=less<T> >
 bool setMax(T &mem, const T&v, Comp comp = Comp())
 { return comp(mem, v) ? mem = v, true : false; }
 mt19937_64 rng(time(nullptr));
-
-#endif

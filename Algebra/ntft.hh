@@ -1,3 +1,4 @@
+#pragma once
 #include "../Header.hh"
 
 namespace ntft {

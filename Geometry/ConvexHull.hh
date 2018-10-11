@@ -1,3 +1,4 @@
+#pragma once
 #include "Point.hh"
 
 using Polygon = vector<Point>;

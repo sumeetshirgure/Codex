@@ -1,3 +1,4 @@
+#pragma once
 #include "../Header.hh"
 
 /* Manacher's algorithm for finding all palindromic radii. */
