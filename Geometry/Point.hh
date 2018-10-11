@@ -40,6 +40,7 @@ Ptype signedAreax2(const vector<Point> &v) {
 /* First translate to new origin, then rotate by theta. */
 Point affineTransform (const Point &point,
                        const Point &pivot, const Ftype &theta) {
-  Point t = point - pivot; Ftype C = cos(theta), S = sin(theta);
+  Point t = point - pivot;
+  Ftype C = cos(theta), S = sin(theta);
   return Point({t.x*C-t.y*S, t.x*S+t.y*C}) ;
 } // PType must be float

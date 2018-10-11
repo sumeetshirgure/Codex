@@ -4,9 +4,9 @@ struct Line {
   Ptype a, b, c;
   Line(const Point&p, const Point&q) {
     a = q.y-p.y, b = p.x-q.x;
+    // auto g = __gcd(a, b);
+    // a /= g, b /= g;
     c = -(a*p.x+b*p.y);
-    // auto g = __gcd(c, __gcd(a, b));
-    // a /= g, b /= g, c /= g;
   }
   Line (const Ptype&aa=0, const Ptype&bb=0, const Ptype&cc=0) :
     a(aa), b(bb), c(cc) { }
