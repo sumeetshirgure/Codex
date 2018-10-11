@@ -6,21 +6,22 @@ using Ftype = long double; // all other metrics
 
 struct Point {
   Ptype x, y;
-  Point(Ptype xx=0, Ptype yy=0) : x(xx), y(yy) {}
   inline Ptype norm2() const& {return x*x+y*y;}
   Ftype norm() const& {return sqrt(norm2()); }
   Ftype arg() const& {return atan2(y, x);}
 };
 Point operator+(const Point&p, const Point&q)
-{ return Point(p.x+q.x, p.y+q.y); }
+{ return Point({p.x+q.x, p.y+q.y}); }
 Point operator-(const Point&p, const Point&q)
-{ return Point(p.x-q.x, p.y-q.y); }
+{ return Point({p.x-q.x, p.y-q.y}); }
 Point operator*(const Point &p, const Ptype &k)
-{ return Point(k*p.x,k*p.y); }
-Point operator/(const Point &p, const Ptype &k)
-{ return Point(p.x/k,p.y/k); }
+{ return Point({k*p.x,k*p.y}); }
+Point operator*(const Ptype &k, const Point &p)
+{ return Point({k*p.x,k*p.y}); }
 Ptype operator*(const Point &p, const Point &q)
 { return p.x*q.y - q.x*p.y; }
+Point operator/(const Point &p, const Ptype &k)
+{ return Point({p.x/k,p.y/k}); }
 Ptype operator^(const Point &p, const Point &q)
 { return p.x*q.x + p.y*q.y; }
 bool operator==(const Point&p, const Point&q)
@@ -40,5 +41,5 @@ Ptype signedAreax2(const vector<Point> &v) {
 Point affineTransform (const Point &point,
                        const Point &pivot, const Ftype &theta) {
   Point t = point - pivot; Ftype C = cos(theta), S = sin(theta);
-  return Point(t.x*C-t.y*S, t.x*S+t.y*C) ;
+  return Point({t.x*C-t.y*S, t.x*S+t.y*C}) ;
 } // PType must be float
