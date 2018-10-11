@@ -38,7 +38,7 @@ void trace_rec(stringstream&sst, const T&t, const Args... args)
 template<typename... Args> void trace(const string&s, Args... args)
 {stringstream sst(s); cerr << "{ "; trace_rec(sst, args...); cerr << endl;}
 #define dbg(...) trace(#__VA_ARGS__, __VA_ARGS__)
-template <typename T> void dbr(const T &lb, const T &ub)
+template <typename T> void dbr(const T lb, const T ub)
 {cerr<<'{';for(auto it=lb; it!=ub; it++)cerr<<' '<<(*it);cerr<<" }"<<endl;}
 template<typename T, typename Comp=less<T> >
 bool setMin(T &mem, const T&v, Comp comp = Comp())
