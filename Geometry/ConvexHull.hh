@@ -1,13 +1,11 @@
 #pragma once
 #include "Point.hh"
 
-using Polygon = vector<Point>;
-
 /* Andrew's monotone chain algorithm.*/
-Polygon convex_hull(Polygon &v) {
+template<typename T> vector<Point<T>> convex_hull(vector<Point<T>> &v) {
   if( v.size() <= 1 ) return v;
-  Polygon hull(v.size()+1);
-  sort(v.begin(), v.end(), [&](const Point&p, const Point&q) {
+  vector<Point<T>> hull(v.size()+1);
+  sort(v.begin(), v.end(), [&](const Point<T>&p, const Point<T>&q) {
                              return p.x!=q.x?p.x<q.x:p.y<q.y; });
   size_t hsz = 0;
   for(int phase=0; phase<2; phase++) {
