@@ -23,7 +23,7 @@ template<typename T, typename F> Point<T> operator*(const Point<T>&p, const F&k)
 template<typename T, typename F> Point<T> operator*(const F&k, const Point<T>&p)
 { return Point<T>(k*p.x,k*p.y); }
 template<typename T, typename F> Point<T> operator/(const Point<T>&p, const F&k)
-{ return Point(p.x/k,p.y/k); }
+{ return Point<T>(p.x/k,p.y/k); }
 
 /* Vector products. */
 template<typename T> T operator*(const Point<T>&p, const Point<T>&q)
