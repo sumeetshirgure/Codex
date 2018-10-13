@@ -30,8 +30,8 @@ long double dist(const Line<U>&line, const Point<V>&p)
 // { return sqrt( dist2(line, p) ); }
 
 /* Projection formula : k=-1 for foot, -2 for reflection. */
-template<typename U, typename V, typename W> Point<U> projection
-(const Point<U>&p, const Line<V>&line, const W&k=-1) {
-  U temp = line.fxval(p)/((U) line.dir().norm2());
-  return Point(p.x + line.a * temp * k, p.y + line.b * temp * k);
+template<typename T, typename V, typename W=int> Point<T> projection
+(const Point<T>&p, const Line<V>&line, const W&k=-1) {
+  T temp = line.fxval(p)/((T) line.dir().norm2());
+  return Point<T>(p.x + line.a * temp * k, p.y + line.b * temp * k);
 } // Extend to 3D.
