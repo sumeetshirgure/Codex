@@ -15,3 +15,16 @@ vector<int> kmp_pi(const Sequence<T, Args...>&seq) {
   }
   return pi;
 }
+
+/* String matcher DFA. */
+template<typename State>
+vector<State> matcher_aut(const string &alphabet, const string&seq) {
+  auto pi = kmp_pi(seq);
+  vector<State> dfa(pi.size());
+  for(int i=0; i < (int)dfa.size(); i++) {
+    for(const auto &c:alphabet)
+      if( i < (int)seq.size() and c == seq[i] ) dfa[i][c] = i+1;
+      else dfa[i][c] = dfa[pi[i]][c];
+  }
+  return dfa;
+}
