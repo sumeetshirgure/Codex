@@ -29,6 +29,7 @@ int point_in_polygon(const Point<T>&p, const vector<Point<T>>&v) {
 template<typename T>
 int point_in_convex_polygon(const Point<T>&p, const vector<Point<T>>&v) {
   if( p == v[0] ) return 0;
+  if( v.size() == 1 ) return 1; // Handles all sizes of v.
   int n = v.size(); auto pv = p - v[0];
   if( ((v[1]-v[0])*pv) < 0 ) return 1;
   if( ((v[n-1]-v[0])*pv) > 0 ) return 1;
