@@ -6,7 +6,7 @@ using ll = long long;
 using ld = long double;
 #define ff first
 #define ss second
-#define nl '\n'
+const char nl = '\n';
 /* -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- -*- */
 #include <bits/extc++.h>
 namespace pbds =  __gnu_pbds;
@@ -45,4 +45,4 @@ bool setMin(T &mem, const T&v, Comp comp = Comp())
 template<typename T, typename Comp=less<T> >
 bool setMax(T &mem, const T&v, Comp comp = Comp())
 { return comp(mem, v) ? mem = v, true : false; }
-mt19937_64 rng(time(nullptr));
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
