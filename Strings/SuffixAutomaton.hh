@@ -56,4 +56,18 @@ namespace SuffixAutomaton {
     }
   };
 
+  pair<int, int> longest_common_substring(const string&s, const string&t) {
+    Automaton aut(t);
+    int state = 0, len = 0;
+    pair<int, int> ans(0, 0);
+    for(int i = 0; i < (int)s.length(); i++) {
+      for(; state!=0 and aut.st[state][s[i]] == -1; 
+          state=aut.st[state].link, len = aut.st[state].len);
+      if( aut.st[state][s[i]] != -1 ) state = aut.st[state][s[i]], len++;
+      if( len > ans.first ) ans.first = len, ans.second = i;
+    }
+    ans = make_pair(ans.second - ans.first + 1, ans.second + 1);
+    return ans;
+  }
+
 };
