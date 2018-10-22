@@ -1,18 +1,17 @@
 #pragma once
 #include "../Header.hh"
 
-/* Disjoint set union-find structure.
-   Use path compression and rank comparison. */
+/* Disjoint set union-find structure. Uses path compression. */
 template<typename T>
 struct DSU {
-  vector<int> par, rank;
+  vector<int> par, size;
   vector<T> data;
 
   DSU(const size_t &_n) {
-    par.resize(_n), rank.resize(_n);
+    par.resize(_n), size.resize(_n);
     data.resize(_n);
     iota(par.begin(), par.end(), 0);
-    fill(rank.begin(), rank.end(), 0);
+    fill(size.begin(), size.end(), 1);
   }
 
   inline int find(int x) {
@@ -25,8 +24,8 @@ struct DSU {
   bool unite(int u, int v) {
     u = find(u), v = find(v);
     if( u == v ) return false;
-    if( rank[v] > rank[u] ) swap(u, v);
-    if( rank[u] == rank[v] ) rank[u]++;
+    if( size[v] > size[u] ) swap(u, v);
+    size[u] += size[v];
     par[v] = u;
     data[u] = combine(data[u], data[v]);
     return true;
@@ -42,4 +41,3 @@ struct DSU {
     par[u] = par[find(u)] = u;
   }
 };
-
