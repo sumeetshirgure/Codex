@@ -1,8 +1,6 @@
 #pragma once
 #include "Point.hh"
 
-#define Ptype ll
-
 template<typename T>
 struct Line {
   T a, b, c;
