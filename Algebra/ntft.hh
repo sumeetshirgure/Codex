@@ -10,27 +10,27 @@ namespace ntft {
     return true;
   }
 
-  bool is_generator(ll _gen, ll _k, int _p) {
-    ll _mod = 1 + (_k << _p);
-    unordered_set<ll> H;
-    for(ll x=_gen; H.find(x) == H.end(); x = (x*_gen)%_mod)
-      H.emplace(x);
-    return (int)H.size() == (1 << _p);
-  }
-
-  ll modular_inverse(ll x, ll _mod) {
+  ll exponentiate(ll x, ll n, ll _mod) {
     ll y = 1;
-    for(int n=_mod-2; n>0; n>>=1, x = (x*x)%_mod)
+    for(; n>0; n>>=1, x = (x*x)%_mod)
       if(n & 1) y = (y*x) % _mod;
     return y;
   }
 
+  bool is_generator(ll _gen, ll _k, int _p) {
+    ll _mod = 1+(_k<<_p);
+    bool p_2 = exponentiate(_gen, (_mod-1)/ 2, _mod) != 1;
+    bool p_k = exponentiate(_gen, (_mod-1)/_k, _mod) != 1;
+    return p_2 and not p_k; // Has order exactly 2^_k.
+  }
+
+  inline ll modular_inverse(ll x, ll _mod)
+  { return exponentiate(x, _mod-2, _mod); }
+
   int bit_reverse(int x, int lg) {
     int y = 0;
-    for(int j=0, b=1, c=1<<lg; j<lg; j++, b<<=1) {
-      c>>=1;
+    for(int j=0, b=1, c=(1<<(lg-1)); j<lg; j++, b<<=1, c>>=1)
       if( x & b ) y |= c;
-    }
     return y;
   }
 
@@ -42,6 +42,7 @@ namespace ntft {
 
   void inplace_ntft(vector<ll> &a, bool invert=false) {
     size_t n = a.size(), lg = __builtin_ctz(n);
+    assert((n>>lg)==1);
 
     for(size_t i=0; i<n; i++) {
       size_t j = bit_reverse(i, lg);
