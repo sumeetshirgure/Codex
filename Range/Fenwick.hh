@@ -14,6 +14,13 @@ struct Fenwick {
     if(pos < 0) throw out_of_range("Index out of range.");
     for(; pos < (int)tree.size(); pos|=(pos+1)) tree[pos] += val;
   }
-  // Return first index with partial sum >= acc, or n if no such index.
-  int lower_bound(const T &acc) { return (int)tree.size(); }
+  // Return first index with partial sum > acc, n if acc exceeds total sum.
+  int upper_bound(T acc) {
+    int idx = 0, x = (1<<30);
+    for(; x>0; x>>=1) {
+      if( idx+x-1 >= (int)tree.size() ) continue;
+      if( acc >= tree[idx+x-1] ) acc -= tree[idx+x-1], idx += x;
+    }
+    return idx;
+  }
 };
