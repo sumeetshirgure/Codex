@@ -43,4 +43,20 @@ namespace Arithmetic {
     }
   }
 
+  /* Primitive root modulo prime. */
+  ll primitive_root(ll prime) {
+    vector<pair<int,int>> f;
+    ll phi = prime - 1;
+    factorise(phi, f);
+    ll gen = 2;
+    for(; gen<prime; gen++) {
+      bool is_generator = true;
+      for(auto &factor: f)
+        if( modular_exponentiation(gen, phi/factor.first, prime) == 1 )
+        { is_generator = false; break; }
+      if( is_generator ) return gen;
+    }
+    return prime;
+  }
+
 };
