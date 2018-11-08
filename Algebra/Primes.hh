@@ -59,4 +59,17 @@ namespace Arithmetic {
     return prime;
   }
 
+  /* Discrete logarithm in prime group of units. */
+  ll shanks_discrete_log(ll a, ll b, ll mod) {
+    ll ak = 1, lhs = 1, rhs = b, k;
+    for(k = 0; k*k<mod; k++, ak = (ak * a)%mod);
+    unordered_map<ll, ll> L;
+    for(ll i=0; i<mod; i+=k, lhs = (lhs * ak) % mod) L[lhs] = i;
+    for(ll j=0; j<k; j++, rhs = (rhs * a) % mod) {
+      auto it = L.find(rhs);
+      if( it != L.end() ) return (it->second - j + mod-1) % (mod-1);
+    }
+    return -1;
+  }
+
 };
