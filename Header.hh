@@ -28,7 +28,7 @@ template<typename Head, typename... Tail> void debug_out(Head h, Tail... t)
 #define pr(...) cerr<<"["<<(#__VA_ARGS__)<<"] : [", debug_out(__VA_ARGS__)
 template <typename T> void dbr(T lb, T ub)
 {cerr<<'{';for(auto it=lb; it!=ub; it++)cerr<<' '<<to_string(*it); cerr<<" }"<<endl;}
-template<typename T, typename Comp=less<T>> bool setMin(T &mem, const T&v, Comp comp = Comp())
-{return comp(v, mem) ? mem = v, true : false;}
-template<typename T, typename Comp=less<T>> bool setMax(T &mem, const T&v, Comp comp = Comp())
-{return comp(mem, v) ? mem = v, true : false;}
+template<typename T, typename Comp=less<T>> bool smin(T &mem, T const&v, Comp const&cmp=Comp())
+{return cmp(v, mem) ? mem = v, true : false;}
+template<typename T, typename Comp=less<T>> bool smax(T &mem, T const&v, Comp const&cmp=Comp())
+{return cmp(mem, v) ? mem = v, true : false;}
