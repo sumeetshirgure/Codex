@@ -45,15 +45,15 @@ void dnc(int lx, int rx, vector<Point<T>> &v, vector<T> &dist) {
       for(int jdx=idx; jdx<hi; jdx++) {
         auto del = v[jdx] - S[i];
         auto distance = del.norm2();
-        setMin(dist[v[jdx].id], distance);
-        setMin(dist[S[i].id], distance);
+        smin(dist[v[jdx].id], distance);
+        smin(dist[S[i].id], distance);
         if( dist[S[i].id] < del.y * del.y ) break;
       }
       for(int jdx=idx-1; jdx>=lo; jdx--) {
         auto del = v[jdx] - S[i];
         auto distance = del.norm2();
-        setMin(dist[v[jdx].id], distance);
-        setMin(dist[S[i].id], distance);
+        smin(dist[v[jdx].id], distance);
+        smin(dist[S[i].id], distance);
         if( dist[S[i].id] < del.y * del.y ) break;
       }
     }

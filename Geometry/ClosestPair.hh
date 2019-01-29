@@ -19,7 +19,7 @@ void dnc(size_t lx, size_t rx,
   auto temp = opt;
   for(int i=0; i<(int)a.size(); i++)
     for(int j=i-1; j>=0 and (a[i].y-a[j].y)*(a[i].y-a[j].y) <= opt; j--)
-      if( setMin(temp, (a[i]-a[j]).norm2()) ) _p=a[i], _q=a[j]; // O(1)
+      if( smin(temp, (a[i]-a[j]).norm2()) ) _p=a[i], _q=a[j]; // O(1)
   opt = temp;
 }
 

@@ -22,8 +22,8 @@ template<typename T> T diameter(const vector<Point<T>> &p) {
   for(int i=0, j=n-1, u=0, v=1; i<n; j=i++) {
     Point base = p[i] - p[j];
     for(; base * (p[v]-p[u]) > 0; u=v++) if( v == n ) v = 0;
-    setMax(dia, (p[u]-p[i]).norm());
-    setMax(dia, (p[u]-p[j]).norm());
+    smax(dia, (p[u]-p[i]).norm());
+    smax(dia, (p[u]-p[j]).norm());
   }
   return dia;
 }
@@ -37,7 +37,7 @@ template<typename T> T width(const vector<Point<T>>&p) {
     for(; base * (p[v]-p[u]) > 0; u=v++) if( v == n ) v = 0;
     T curWidth = (base * (p[u]-p[j])) / base.norm();
     if( width < 0 ) width = curWidth;
-    else setMin(width, curWidth);
+    else smin(width, curWidth);
   }
   return width;
 }
