@@ -15,7 +15,7 @@ namespace Arithmetic {
 
   /* Modular inverse. */
   bool modular_inverse(ll x, ll mod, ll &ans) {
-    // return modular_exponentiation(x, phi(mod)-1, mod); 
+    // return modular_exponentiation(x, phi(mod)-1, mod);
     ll temp;
     if( extended_euclidean(x, mod, ans, temp) != 1 ) return false;
     if( ans < 0 or ans >= mod ) ans = (ans % mod + mod) % mod;
@@ -23,13 +23,14 @@ namespace Arithmetic {
   }
 
   /* Solve equation of the form ax%mod == b%mod. */
-  vector<ll> modular_linear_equation_solver(ll a, ll b, ll mod) {
+  tuple<ll, ll, ll> modular_linear_equation_solver(ll a, ll b, ll mod) {
     ll x, y, g = extended_euclidean(a, mod, x, y);
-    vector<ll> solutions;
-    if( b % g ) return solutions;
-    solutions.resize(g);
-    for(int i=0; i<g; i++) solutions[i] = (x * (b / g) + i * (mod / g)) % mod;
-    return solutions;
+    if( g == 0 or mod == 0 ) return {-1,-1,g};
+    if( b % g ) return {-1,0,g};
+    ll p = ((b / g) * x) % mod, q = mod / g;
+    if( p < 0 ) p += mod;
+    if( q < 0 ) q += mod;
+    return {p, q, g}; // All solutions : {(p+i*q)%mod, i in [0,g)}
   }
 
   /* Chinese remainder theorem. */
