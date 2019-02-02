@@ -1,73 +1,38 @@
 #pragma once
 #include "../Header.hh"
 
-namespace SuffixArray {
+template<typename Sequence> struct SuffixArray {
+  int const n;
+  vector< vector<int> > p;
+  using Bucket = pair<pair<int, int>, int>;
+  vector< Bucket > m;
+  vector<int> sfx, lcpa;
 
-  const int L = 17, N = (1<<L);
-  int lvl, rank[L][N], last[N], sid[N], cnt[N], n, sfx[N], lcpa[N];
-  char s[N];
-  using Bucket = pair< pair<int,int>, int >;
-  Bucket buckets[N], temp_buckets[N];
-  const int SIGMA = 256;
-
-  int lcp(int x, int y) {
-    int len = 0, xlim = last[x], ylim = last[y];
-    for(int j=lvl, b=1<<j; j>=0; j--, b>>=1) {
-      if( x+b<=xlim and y+b<=ylim and rank[j][x] == rank[j][y] )
-        x += b, y += b, len+=b;
-    }
+  int lcp(int i, int j) {
+    if( i == j ) return n - i;
+    int len = 0;
+    for(int k=p.size()-1, b=(1<<k); b>0 and i<n and j<n; k--, b>>=1)
+      if( p[k][i] == p[k][j] ) i += b, j += b, len += b;
     return len;
   }
 
-  inline void sort_buckets(Bucket arr[]=buckets, Bucket tmp[]=temp_buckets) {
-    fill(cnt, cnt+n+1, 0);
-    for(int i=1; i<n; i++) cnt[ arr[i].ff.ss ]++;
-    for(int i=1; i<=n; i++) cnt[i] += cnt[i-1];
-    for(int i=n-1; i>=1; i--) tmp[cnt[arr[i].ff.ss]--] = arr[i];
-    fill(cnt, cnt+n+1, 0);
-    for(int i=1; i<n; i++) cnt[ tmp[i].ff.ff ]++;
-    for(int i=1; i<=n; i++) cnt[i] += cnt[i-1];
-    for(int i=n-1; i>=1; i--) arr[cnt[tmp[i].ff.ff]--] = tmp[i];
+  SuffixArray(Sequence const&s) :
+  n(std::end(s) - std::begin(s)), p(1, vector<int>(n, 0)), m(n), sfx(n), lcpa(n) {
+    for(int i=0; i<n; i++) p[0][i] = (int)(s[i]);
+    for(int j=1, b=1; b<n; b<<=1, j++) {
+      p.emplace_back(vector<int>(n, 0));
+      for(int i=0; i<n; i++) m[i] = {{p[j-1][i], i+b<n ? p[j-1][i+b] : -1}, i};
+      sort(all(m));
+      for(int l=0,r=0; l<n; l=r)
+        for(; r<n and m[r].ff == m[l].ff; r++) p[j][ m[r].ss ] = l;
+    }
+    iota(all(sfx), 0);
+    auto&ranks = p.back();
+    sort(all(sfx), [&ranks](int const&u, int const&v)
+    { return ranks[u] != ranks[v] ? ranks[u] < ranks[v] : u < v; });
+    for(int i=1; i<n; i++) lcpa[i] = lcp(sfx[i-1], sfx[i]);
+    m.clear();
   }
 
-  void build_array(const vector<string>&D) {
-    s[0] = '$'; n = 1;
-    for(int idx=0; idx < (int)D.size(); idx++) {
-      const auto& str = D[idx];
-      for(int i=0; i<(int)str.length(); i++) s[n+i] = str[i];
-      fill(last+n, last+n+str.length(), n+str.length());
-      fill(sid+n, sid+n+str.length(), idx);
-      n += str.length();
-    }
-    fill(cnt, cnt+SIGMA, 0);
-    for(int i=1; i<n; i++) cnt[(int)s[i]]++;
-    for(int acc=1, i=0; i<SIGMA; i++)
-      swap(acc, cnt[i]), acc += cnt[i];
-    for(int i=1; i<n; i++) rank[0][i] = cnt[(int)s[i]];
-    lvl = 0;
-    for(int j=1, b=(1<<lvl); b<n; lvl++, j++, b<<=1) {
-      for(int i=1; i<n; i++)
-        buckets[i] = {{rank[lvl][i],(i+b<last[i]?rank[lvl][i+b]:0)},i};
-      sort_buckets(); // sort(buckets+1, buckets+n);
-      for(int l=1, r=1; l<n; l=r)
-        for(; r<n and buckets[r].ff == buckets[l].ff; r++)
-          rank[j][ buckets[r].ss ] = l;
-    }
-    fill(cnt, cnt+1+n, 0);
-    for(int i=1; i<n; i++) cnt[ rank[lvl][i] ]++;
-    for(int i=1; i<=n; i++) cnt[i] += cnt[i-1];
-    for(int i=n-1; i>=1; i--) sfx[ cnt[rank[lvl][i]]-- ] = i;
-    for(int i=1; i+1<n; i++) lcpa[i] = lcp(sfx[i], sfx[i+1]);
-  }
-
-  void sort_all_substrings(const vector<string> &v) {
-    build_array(v);
-    for(int r=1; r<n; r++) {
-      int pos = sfx[r];
-      cout << pos << "\t:\t";
-      for(int j=pos; j<last[pos]; j++) cerr << s[j];
-      cerr << endl;
-    }
-  }
-
+  int const& operator[](size_t const&i) const { return sfx[i]; }
 };
