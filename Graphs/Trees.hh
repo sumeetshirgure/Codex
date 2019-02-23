@@ -54,7 +54,7 @@ void hld(int u, int lane) {
   meet[u] = lane;
   st[u] = ++timer;
   for(auto &v: adj) hld(v, (v == adj[0] ? lane : v));
-  en[u] = ++timer;
+  en[u] = timer;
 }
 
 void init_hld(int root) {
