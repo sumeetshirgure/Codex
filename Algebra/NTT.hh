@@ -1,7 +1,7 @@
 #pragma once
 #include "../Header.hh"
 
-namespace ntft {
+namespace NTT {
 
   bool is_prime(ll _k, int _p) {
     ll x = 1 + (_k << _p);
@@ -40,7 +40,7 @@ namespace ntft {
 
   const ll gen = 5, genInv = modular_inverse(gen, mod);
 
-  void inplace_ntft(vector<ll> &a, bool invert=false) {
+  void inplace_ntt(vector<ll> &a, bool invert=false) {
     size_t n = a.size(), lg = __builtin_ctz(n);
     assert((n>>lg)==1);
 
@@ -78,11 +78,11 @@ namespace ntft {
     vector<ll> a(n, 0), b(n, 0);
     copy(_a.begin(), _a.end(), a.begin());
     copy(_b.begin(), _b.end(), b.begin());
-    inplace_ntft(a); inplace_ntft(b);
+    inplace_ntt(a); inplace_ntt(b);
     for(size_t i=0; i<n; i++)
       a[i] = (a[i] * b[i]) % mod;
-    inplace_ntft(a, true);
-    a.resize(_a.size()+_b.size());
+    inplace_ntt(a, true);
+    a.resize(_a.size()+_b.size()-1);
     return a;
   }
 
