@@ -46,15 +46,17 @@ template<typename T> Matrix<T> matexp(Matrix<T> const&m, int ex, Matrix<T> const
 }
 
 /* Gaussian-Jordan elimination over a field. */
-template<typename T> void GaussJordan(Matrix<T> a, Matrix<T>&b) {
+template<typename T> T GaussJordan(Matrix<T> a, Matrix<T>&b) {
+  T det = 1;
   assert(b.n == a.n);
   int n = a.n, m = a.m;
   int i, j ,k;
   for(k=0; k<n; k++) { //
     for(j=k, i=k+1; i<n; i++) if( abs(a[i][k]) > abs(a[j][k]) ) j = i;
-    swap(a[j], a[k]), swap(b[j], b[k]);
+    if( j != k ) det = -det, swap(a[j], a[k]), swap(b[j], b[k]);
     T piv = a[k][k];
-    if( piv == 0 ) return; // Singular.
+    det *= piv;
+    if( piv == 0 ) return 0; // Singular.
     for(j=0; j<m; j++) a[k][j] = (a[k][j] / piv);
     for(j=0; j<b.m; j++) b[k][j] = (b[k][j] / piv);
     for(i=0; i<n; i++) {
@@ -64,4 +66,5 @@ template<typename T> void GaussJordan(Matrix<T> a, Matrix<T>&b) {
       for(j=0; j<b.m; j++) b[i][j] -= piv * b[k][j];
     }
   }
+  return det;
 }
