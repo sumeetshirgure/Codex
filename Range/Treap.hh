@@ -10,7 +10,7 @@ struct Treap {
     bool rev;
     Node *l, *r;
     Node(const int &v): sz(1), pry(prygen(rng)), val(v), xs(0), sm(v),
-    rev(false) ,l(nullptr), r(nullptr) { }
+    rev(false), l(nullptr), r(nullptr) { }
   };
 
   Node *root = nullptr;
@@ -104,7 +104,7 @@ struct Treap {
     if( k == 0) return;
     Node *t1 = nullptr, *t2 = nullptr, *t3 = nullptr, *t4 = nullptr;
     int ord = 0;
-    split(lx, ord, root, t1, t2); 
+    split(lx, ord, root, t1, t2);
     split(lx+k, ord, t2, t2, t3);
     split(rx, ord, t3, t3, t4);
     join(root, t1, t3); join(root, root, t2); join(root, root, t4);
