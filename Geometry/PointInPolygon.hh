@@ -21,8 +21,8 @@ int point_in_polygon(const Point<T>&p, const vector<Point<T>>&v) {
     Point<T> pi = p - v[i], pj = p - v[j];
     if( (pi*pj) == 0 and (pi^pj) <= 0 ) return 0; // Point on segment.
   }
-  if( winding_number(p, v) == 0 ) return -1;
-  return 1; // Report -ve winding numbers separately.
+  if( winding_number(p, v) == 0 ) return +1;
+  return -1; // Report -ve winding numbers separately.
 } // 0 : on, +1 : out, -1 : in
 
 /* Assumes polygon is given in standard form (as returned by convex_hull). */
