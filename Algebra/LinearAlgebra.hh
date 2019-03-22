@@ -38,7 +38,7 @@ template<typename T> string to_string(Matrix<T> const&mat) {
   return ret;
 }
 
-template<typename T> Matrix<T> matexp(Matrix<T> const&m, int ex, Matrix<T> const&ID) {
+template<typename T> Matrix<T> matexp(Matrix<T> const&m, ll ex, Matrix<T> const&ID) {
   auto ret = ID, sq = m;
   for(; ex>0; ex>>=1, sq *= sq)
     if(ex&1) ret *= sq;
