@@ -28,11 +28,10 @@ struct SegTree {
 
   Query tree_query(int x, int lx, int rx) {
     push(x, lx, rx);
-    if( rx <= qlo || qhi <= lx ) return Query();
     if( qlo <= lx && rx <= qhi ) return get_query(tree[x]);
     int mid = (lx + rx) >> 1;
-    if( rx <= mid ) return tree_query(x + x, lx, mid);
-    if( lx >= mid ) return tree_query(x+1+x, mid, rx);
+    if( qhi <= mid ) return tree_query(x + x, lx, mid);
+    if( qlo >= mid ) return tree_query(x+1+x, mid, rx);
     return combine(tree_query(x+x, lx, mid), tree_query(x+1+x, mid, rx));
   }
 
