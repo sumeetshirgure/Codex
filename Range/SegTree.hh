@@ -7,15 +7,23 @@ struct SegTree {
   int lo, hi, qlo, qhi;
   Update update;
 
-  SegTree(int sz) : lo(0), hi(sz) { tree.resize(sz<<2); }
-  SegTree(int lo, int hi) : lo(lo), hi(hi) { tree.resize((hi-lo)<<2); }
+  SegTree(int sz) : lo(0), hi(sz) { tree.resize(sz<<2); tree_build(1, lo, hi); }
+  SegTree(int lo, int hi) : lo(lo), hi(hi) { tree.resize((hi-lo)<<2); tree_build(1, lo, hi); }
 
+  inline void init(const int&x, const int &id);
   inline void push(const int&x, const int &lx, const int &rx);
   inline void pull(const int&x, const int &lx, const int &rx);
   inline void mark(const int&x, const int &lx, const int &rx);
 
   inline Query get_query(const Node &node);
   inline Query combine(const Query &lq, const Query&rq);
+
+  void tree_build(int x, int lx, int rx) {
+    if( rx - lx == 1 ) { init(x, lx); return; }
+    int mid = (lx+rx)>>1;
+    tree_build(x+x, lx, mid), tree_build(x+1+x, mid, rx);
+    pull(x, lx, rx);
+  }
 
   void tree_update(int x, int lx, int rx) {
     push(x, lx, rx);
