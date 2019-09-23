@@ -11,6 +11,8 @@ template<typename T> vector<Point<T>> convex_hull(vector<Point<T>> &v) {
   for(int phase=0; phase<2; phase++) {
     size_t lim = hsz;
     for(auto &p: v) {
+      // change to < 0 for allowing collinear points on hull
+      // set hull maxsize to 2 * v.size() + 1 in that case
       while(hsz>=lim+2 and ((hull[hsz-1]-hull[hsz-2])*(p-hull[hsz-1]))<=0)
         hsz--;
       hull[hsz++] = p;
